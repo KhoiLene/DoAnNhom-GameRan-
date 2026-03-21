@@ -346,17 +346,17 @@ namespace DoAnNhom_GameRan_
 
         private bool IsSafe(Circle pos, List<Circle> currentEnemy)
         {
-            if (pos.X < 0 || pos.X > maxWidth ||
-                pos.Y < 0 || pos.Y > maxHeight)
+            // ❗ FIX CHÍNH Ở ĐÂY
+            if (pos.X < 0 || pos.X >= maxWidth ||
+                pos.Y < 0 || pos.Y >= maxHeight)
                 return false;
 
             if (IsHitPlayerBody(pos))
                 return false;
-            // đâm chính nó
+
             if (IsHitEnemyBody(pos, currentEnemy))
                 return false;
 
-            // đâm enemy còn lại
             if (currentEnemy == enemy1 && IsHitEnemyBody(pos, enemy2))
                 return false;
 
@@ -369,9 +369,26 @@ namespace DoAnNhom_GameRan_
 
         private string GetSafeDirection(string currentDir, Circle head, List<Circle> currentEnemy)
         {
-            List<string> dirs = new List<string> { "left", "right", "up", "down" };
+            // Ưu tiên: đi thẳng → trái → phải → ngược
+            List<string> dirs = new List<string>();
 
-            foreach (string dir in dirs.OrderBy(x => rand.Next()))
+            switch (currentDir)
+            {
+                case "left":
+                    dirs.AddRange(new[] { "left", "up", "down", "right" });
+                    break;
+                case "right":
+                    dirs.AddRange(new[] { "right", "up", "down", "left" });
+                    break;
+                case "up":
+                    dirs.AddRange(new[] { "up", "left", "right", "down" });
+                    break;
+                case "down":
+                    dirs.AddRange(new[] { "down", "left", "right", "up" });
+                    break;
+            }
+
+            foreach (string dir in dirs)
             {
                 Circle test = GetNextPosition(head, dir);
 
@@ -379,6 +396,7 @@ namespace DoAnNhom_GameRan_
                     return dir;
             }
 
+            // nếu bị kẹt → đứng yên (không xuyên tường)
             return currentDir;
         }
 
