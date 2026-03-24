@@ -54,5 +54,12 @@ namespace DoAnNhom_GameRan_
             otpForm.Show();
             this.Close();
         }
+
+        private void Back_Click(object sender, EventArgs e)
+        {
+            FormLogin loginForm = new FormLogin();
+            loginForm.Show();
+            this.Close();
+        }
     }
 }

@@ -39,5 +39,12 @@ namespace DoAnNhom_gameRan_
                 MessageBox.Show("OTP sai!");
             }
         }
+
+        private void Back_Click(object sender, EventArgs e)
+        {
+            Email loginForm = new Email();
+            loginForm.Show();
+            this.Close();
+        }
     }
 }
