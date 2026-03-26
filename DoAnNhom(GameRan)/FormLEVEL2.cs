@@ -206,11 +206,19 @@ namespace DoAnNhom_GameRan_
 
             //va cham
 
-            if (Snake[0].X < 0 || Snake[0].X > maxWidth || Snake[0].Y < 0 || Snake[0].Y > maxHeight)
+            if (Snake[0].X < 0 || Snake[0].X >= maxWidth || Snake[0].Y < 0 || Snake[0].Y >= maxHeight)
             {
                 GameOver();
-                return;
             }
+
+            //va cham
+            //foreach (Circle obs in obstacles)
+            //{
+            //    if (Snake[0].X == obs.X && Snake[0].Y == obs.Y)
+            //    {
+            //        GameOver();
+            //    }
+            //}
 
 
             // thuc an
@@ -230,7 +238,6 @@ namespace DoAnNhom_GameRan_
 
             picCanvas.Invalidate();
         }
-
 
         private void UpdatePictureBoxGraphics(object sender, PaintEventArgs e)
         {

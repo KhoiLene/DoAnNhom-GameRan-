@@ -504,10 +504,9 @@ namespace DoAnNhom_GameRan_
 
             //va cham
 
-            if (Snake[0].X < 0 || Snake[0].X > maxWidth || Snake[0].Y < 0 || Snake[0].Y > maxHeight)
+            if (Snake[0].X < 0 || Snake[0].X >= maxWidth || Snake[0].Y < 0 || Snake[0].Y >= maxHeight)
             {
                 GameOver();
-                return;
             }
 
 
