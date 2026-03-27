@@ -122,6 +122,23 @@ namespace DoAnNhom_GameRan_
             }
         }
 
+        private void button9_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show(
+                 "Bạn có chắc muốn thoát game?",
+                 "Xác nhận",
+                 MessageBoxButtons.YesNo,
+                 MessageBoxIcon.Question
+                );
+
+            if (result == DialogResult.Yes)
+            {
+                Application.Exit();
+                Form1 f = new Form1();
+                f.Close();
+            }
+        }
+
         //private void FormGAME_FormClosing(object sender, FormClosingEventArgs e)
         //{
         //    Application.Exit();

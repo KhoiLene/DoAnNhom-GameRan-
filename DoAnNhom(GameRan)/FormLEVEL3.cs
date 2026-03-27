@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace DoAnNhom_GameRan_
 {
@@ -387,6 +388,66 @@ namespace DoAnNhom_GameRan_
 
             food = newFood;
         }
+
+        private void btnExcel_Click(object sender, EventArgs e)
+        {
+            string level = "Level3"; // hoặc biến level hiện tại
+
+            var data = db.GetTopScoresByLevel(level);
+
+            if (data.Count == 0)
+            {
+                MessageBox.Show("Không có dữ liệu!");
+                return;
+            }
+
+            Excel.Application app = new Excel.Application();
+            Excel.Workbook wb = app.Workbooks.Add(Type.Missing);
+            Excel.Worksheet ws = (Excel.Worksheet)wb.ActiveSheet;
+
+            // Header
+            ws.Cells[1, 1] = "Rank";
+            ws.Cells[1, 2] = "User ID";
+            ws.Cells[1, 3] = "Username";
+            ws.Cells[1, 4] = "Score";
+
+            int row = 2;
+            int rank = 1;
+
+            foreach (var item in data)
+            {
+                ws.Cells[row, 1] = rank;
+                ws.Cells[row, 2] = item.UserId;
+                ws.Cells[row, 3] = item.Username;
+                ws.Cells[row, 4] = item.Score;
+
+                row++;
+                rank++;
+            }
+
+            ws.Columns.AutoFit();
+            app.Visible = true;
+
+            MessageBox.Show("Xuất Excel thành công!");
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show(
+             "Bạn có chắc muốn thoát game?",
+             "Xác nhận",
+             MessageBoxButtons.YesNo,
+             MessageBoxIcon.Question
+            );
+
+            if (result == DialogResult.Yes)
+            {
+                Application.Exit();
+                Form1 f = new Form1();
+                f.Close();
+            }
+        }
+
         private void EatFood()
         {
             score += 1;

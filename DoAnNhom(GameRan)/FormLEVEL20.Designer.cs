@@ -38,6 +38,8 @@
             this.gameTimer = new System.Windows.Forms.Timer(this.components);
             this.Pause = new System.Windows.Forms.Button();
             this.Back = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.btnExcel = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picCanvas)).BeginInit();
             this.SuspendLayout();
             // 
@@ -82,7 +84,7 @@
             // 
             this.txtScore.AutoSize = true;
             this.txtScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtScore.Location = new System.Drawing.Point(795, 445);
+            this.txtScore.Location = new System.Drawing.Point(793, 599);
             this.txtScore.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.txtScore.Name = "txtScore";
             this.txtScore.Size = new System.Drawing.Size(94, 25);
@@ -93,7 +95,7 @@
             // 
             this.txtHighScore.AutoSize = true;
             this.txtHighScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtHighScore.Location = new System.Drawing.Point(795, 399);
+            this.txtHighScore.Location = new System.Drawing.Point(793, 553);
             this.txtHighScore.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.txtHighScore.Name = "txtHighScore";
             this.txtHighScore.Size = new System.Drawing.Size(119, 25);
@@ -104,7 +106,7 @@
             // 
             this.txtServerHighScore.AutoSize = true;
             this.txtServerHighScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtServerHighScore.Location = new System.Drawing.Point(795, 340);
+            this.txtServerHighScore.Location = new System.Drawing.Point(793, 494);
             this.txtServerHighScore.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.txtServerHighScore.Name = "txtServerHighScore";
             this.txtServerHighScore.Size = new System.Drawing.Size(189, 25);
@@ -143,11 +145,39 @@
             this.Back.UseVisualStyleBackColor = false;
             this.Back.Click += new System.EventHandler(this.Back_Click);
             // 
-            // FormLEVEL1
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.Crimson;
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(798, 404);
+            this.button1.Margin = new System.Windows.Forms.Padding(4);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(152, 69);
+            this.button1.TabIndex = 12;
+            this.button1.Text = "Exit";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // btnExcel
+            // 
+            this.btnExcel.BackColor = System.Drawing.Color.Gray;
+            this.btnExcel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnExcel.Location = new System.Drawing.Point(798, 303);
+            this.btnExcel.Margin = new System.Windows.Forms.Padding(4);
+            this.btnExcel.Name = "btnExcel";
+            this.btnExcel.Size = new System.Drawing.Size(152, 69);
+            this.btnExcel.TabIndex = 11;
+            this.btnExcel.Text = "Print Excel";
+            this.btnExcel.UseVisualStyleBackColor = false;
+            this.btnExcel.Click += new System.EventHandler(this.btnExcel_Click);
+            // 
+            // FormLEVEL20
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1077, 892);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnExcel);
             this.Controls.Add(this.Back);
             this.Controls.Add(this.Pause);
             this.Controls.Add(this.txtHighScore);
@@ -157,7 +187,7 @@
             this.Controls.Add(this.startButton);
             this.Controls.Add(this.txtServerHighScore);
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "FormLEVEL2";
+            this.Name = "FormLEVEL20";
             this.Text = "Classic Snakes Game MOO ICT";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.KeyIsDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.KeyIsUp);
@@ -178,5 +208,7 @@
         private System.Windows.Forms.Button Pause;
         private System.Windows.Forms.Button Back;
         private System.Windows.Forms.Label txtServerHighScore;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnExcel;
     }
 }
