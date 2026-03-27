@@ -664,6 +664,8 @@ namespace DoAnNhom_GameRan_
             snapButton.Enabled = false;
             Pause.Enabled = false;
             Back.Enabled = false;
+            btnExcel.Enabled = false;
+            button1.Enabled = false;
             score = 0;
             txtScore.Text = "Score: " + score;
 
@@ -703,6 +705,8 @@ namespace DoAnNhom_GameRan_
             startButton.Enabled = true;
             snapButton.Enabled = true;
             Back.Enabled = true;
+            btnExcel.Enabled = true;
+            button1.Enabled = true;
 
             startButton.Text = "Restart";
 

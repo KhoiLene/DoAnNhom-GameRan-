@@ -19,6 +19,7 @@ namespace DoAnNhom_GameRan_
 
         private List<Circle> Snake = new List<Circle>();
         private Circle food = new Circle();
+        private DataGridView dgvRank;
 
         int maxWidth;
         int maxHeight;
@@ -34,6 +35,94 @@ namespace DoAnNhom_GameRan_
 
         private int currentUserId; // Add this field to the FormLEVEL1 class
 
+
+        private int GetUserRank()
+        {
+            string level = "Level1";
+            var data = db.GetTopScoresByLevel(level);
+
+            for (int i = 0; i < data.Count; i++)
+            {
+                if (data[i].UserId == currentUserId)
+                {
+                    return i + 1;
+                }
+            }
+
+            return -1;
+        }
+
+        private void LoadRanking()
+        {
+            string level = "Level1";
+            var data = db.GetTopScoresByLevel(level);
+
+            if (data == null || data.Count == 0)
+            {
+                MessageBox.Show("Không có dữ liệu!");
+                return;
+            }
+
+            // ❗ tạo luôn Rank trong data
+            var rankedData = data
+                .Select((x, index) => new
+                {
+                    Rank = "Rank " + (index + 1),
+                    x.UserId,
+                    x.Username,
+                    x.Score
+                }).ToList();
+
+            dataGridView1.DataSource = null;
+            dataGridView1.AutoGenerateColumns = true;
+            dataGridView1.DataSource = rankedData;
+
+            // 👉 highlight user
+            //foreach (DataGridViewRow row in dataGridView1.Rows)
+            //{
+            //    if (row.Cells["UserId"].Value == null) continue;
+
+            //    if (Convert.ToInt32(row.Cells["UserId"].Value) == currentUserId)
+            //    {
+            //        row.DefaultCellStyle.BackColor = Color.Yellow;
+            //        row.DefaultCellStyle.ForeColor = Color.Black;
+
+            //        dataGridView1.FirstDisplayedScrollingRowIndex = row.Index;
+            //    }
+            //}
+
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (row.Cells["UserId"].Value == null) continue;
+
+                int userId;
+                if (!int.TryParse(row.Cells["UserId"].Value.ToString(), out userId)) continue;
+
+                int index = row.Index;
+
+                // 🥇🥈🥉 Top 3
+                if (index == 0)
+                    row.DefaultCellStyle.BackColor = Color.Gold;
+                else if (index == 1)
+                    row.DefaultCellStyle.BackColor = Color.Silver;
+                else if (index == 2)
+                    row.DefaultCellStyle.BackColor = Color.Peru;
+
+                // 👤 USER HIỆN TẠI
+                if (userId == currentUserId)
+                {
+                    row.DefaultCellStyle.BackColor = Color.Yellow;
+                    row.DefaultCellStyle.ForeColor = Color.Black;
+
+                    // 👉 thêm chữ YOU vào Username
+                    string name = row.Cells["Username"].Value.ToString();
+                    row.Cells["Username"].Value = name + " (YOU)";
+
+                    // 👉 scroll tới user
+                    dataGridView1.FirstDisplayedScrollingRowIndex = index;
+                }
+            }
+        }
 
 
 
@@ -386,6 +475,8 @@ namespace DoAnNhom_GameRan_
             Pause.Enabled = false;
             Back.Enabled = false;
             btnExcel.Enabled = false;
+            button1.Enabled = false;
+            dataGridView1.Visible = false;
             score = 0;
             txtScore.Text = "Score: " + score;
 
@@ -426,6 +517,8 @@ namespace DoAnNhom_GameRan_
             snapButton.Enabled = true;
             Back.Enabled = true;
             btnExcel.Enabled = true;
+            button1.Enabled = true;
+            lblRankTitle.Enabled = true;
 
             startButton.Text = "Restart";
 
@@ -437,6 +530,20 @@ namespace DoAnNhom_GameRan_
 
             int serverHS = db.GetServerHighScore("Level1");
             txtServerHighScore.Text = "Server High Score:" + Environment.NewLine + serverHS;
+
+            // 👉 HIỂN THỊ BẢNG XẾP HẠNG
+            lblRankTitle.Visible = true;
+            string level = "Level1";
+            lblRankTitle.Text = "Xếp hạng Rank mức " + level;
+            lblRankTitle.Font = new Font("Arial", 14, FontStyle.Bold);
+            lblRankTitle.ForeColor = Color.Red;
+            lblRankTitle.TextAlign = ContentAlignment.MiddleCenter;
+            LoadRanking();
+            dataGridView1.Visible = true;
+
+            // 👉 thông báo vị trí
+            int rank = GetUserRank();
+            MessageBox.Show("Bạn đứng hạng: " + rank, "Xếp hạng");
 
         }
 

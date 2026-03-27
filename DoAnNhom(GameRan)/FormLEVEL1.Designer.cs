@@ -40,7 +40,10 @@
             this.Back = new System.Windows.Forms.Button();
             this.btnExcel = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.lblRankTitle = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.picCanvas)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // startButton
@@ -171,11 +174,36 @@
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(12, 258);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersWidth = 51;
+            this.dataGridView1.RowTemplate.Height = 24;
+            this.dataGridView1.Size = new System.Drawing.Size(701, 283);
+            this.dataGridView1.TabIndex = 7;
+            this.dataGridView1.Visible = false;
+            // 
+            // lblRankTitle
+            // 
+            this.lblRankTitle.AutoSize = true;
+            this.lblRankTitle.Enabled = false;
+            this.lblRankTitle.Location = new System.Drawing.Point(257, 239);
+            this.lblRankTitle.Name = "lblRankTitle";
+            this.lblRankTitle.Size = new System.Drawing.Size(44, 16);
+            this.lblRankTitle.TabIndex = 8;
+            this.lblRankTitle.Text = "label1";
+            this.lblRankTitle.Visible = false;
+            // 
             // FormLEVEL1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1077, 892);
+            this.Controls.Add(this.lblRankTitle);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btnExcel);
             this.Controls.Add(this.Back);
@@ -192,6 +220,7 @@
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.KeyIsDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.KeyIsUp);
             ((System.ComponentModel.ISupportInitialize)(this.picCanvas)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -210,5 +239,7 @@
         private System.Windows.Forms.Label txtServerHighScore;
         private System.Windows.Forms.Button btnExcel;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Label lblRankTitle;
     }
 }
