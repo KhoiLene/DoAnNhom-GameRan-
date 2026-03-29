@@ -185,5 +185,15 @@ namespace DoAnNhom_GameRan_
 
             return query.ToList();
         }
+
+        public User GetUserByUsername(string username)
+        {
+            return db.Users.FirstOrDefault(u => u.Username == username);
+        }
+
+        public bool IsUsernameExists(string username)
+        {
+            return db.Users.Any(u => u.Username == username);
+        }
     }
 }

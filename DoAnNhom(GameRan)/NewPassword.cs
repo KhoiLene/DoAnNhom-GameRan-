@@ -39,6 +39,7 @@ namespace DoAnNhom_GameRan_
         }
         private void Agree_Click(object sender, EventArgs e)
         {
+            
             string username = txtUsername.Text.Trim();
             string pass1 = txtPassword.Text.Trim();
             string pass2 = txtPassword2.Text.Trim();
@@ -64,6 +65,16 @@ namespace DoAnNhom_GameRan_
             }
 
             bool changedUsername = user.Username != username;
+
+            
+            
+            var existingUser = db.GetUserByUsername(username);
+
+            if (existingUser != null && existingUser.Email != email)
+            {
+                MessageBox.Show("Tên đăng nhập đã tồn tại!");
+                return;
+            }
 
 
             db.UpdatePassword(email, username, pass1);
