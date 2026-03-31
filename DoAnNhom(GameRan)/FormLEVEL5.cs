@@ -14,12 +14,12 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace DoAnNhom_GameRan_
 {
-    public partial class FormLEVEL1 : Form
+    public partial class FormLEVEL5 : Form
     {
 
         private List<Circle> Snake = new List<Circle>();
         private Circle food = new Circle();
-        private DataGridView dgvRank;
+        private List<Circle> obstacles = new List<Circle>();
 
         int maxWidth;
         int maxHeight;
@@ -35,123 +35,96 @@ namespace DoAnNhom_GameRan_
 
         private int currentUserId; // Add this field to the FormLEVEL1 class
 
-
-        private int GetUserRank()
-        {
-            string level = "Level1";
-            var data = db.GetTopScoresByLevel(level);
-
-            for (int i = 0; i < data.Count; i++)
-            {
-                if (data[i].UserId == currentUserId)
-                {
-                    return i + 1;
-                }
-            }
-
-            return -1;
-        }
-
-        private void LoadRanking()
-        {
-            string level = "Level1";
-            var data = db.GetTopScoresByLevel(level);
-
-            if (data == null || data.Count == 0)
-            {
-                MessageBox.Show("Không có dữ liệu!");
-                return;
-            }
-
-            // ❗ tạo luôn Rank trong data
-            var rankedData = data
-                .Select((x, index) => new
-                {
-                    Rank = "Rank " + (index + 1),
-                    x.UserId,
-                    x.Username,
-                    x.Score
-                }).ToList();
-
-            dataGridView1.DataSource = null;
-            dataGridView1.AutoGenerateColumns = true;
-            dataGridView1.DataSource = rankedData;
-
-            // 👉 highlight user
-            //foreach (DataGridViewRow row in dataGridView1.Rows)
-            //{
-            //    if (row.Cells["UserId"].Value == null) continue;
-
-            //    if (Convert.ToInt32(row.Cells["UserId"].Value) == currentUserId)
-            //    {
-            //        row.DefaultCellStyle.BackColor = Color.Yellow;
-            //        row.DefaultCellStyle.ForeColor = Color.Black;
-
-            //        dataGridView1.FirstDisplayedScrollingRowIndex = row.Index;
-            //    }
-            //}
-
-            foreach (DataGridViewRow row in dataGridView1.Rows)
-            {
-                if (row.Cells["UserId"].Value == null) continue;
-
-                int userId;
-                if (!int.TryParse(row.Cells["UserId"].Value.ToString(), out userId)) continue;
-
-                int index = row.Index;
-
-                // 🥇🥈🥉 Top 3
-                if (index == 0)
-                    row.DefaultCellStyle.BackColor = Color.Gold;
-                else if (index == 1)
-                    row.DefaultCellStyle.BackColor = Color.Silver;
-                else if (index == 2)
-                    row.DefaultCellStyle.BackColor = Color.Peru;
-
-                // 👤 USER HIỆN TẠI
-                if (userId == currentUserId)
-                {
-                    row.DefaultCellStyle.BackColor = Color.Yellow;
-                    row.DefaultCellStyle.ForeColor = Color.Black;
-
-                    // 👉 thêm chữ YOU vào Username
-                    string name = row.Cells["Username"].Value.ToString();
-                    row.Cells["Username"].Value = name + " (YOU)";
-
-                    // 👉 scroll tới user
-                    dataGridView1.FirstDisplayedScrollingRowIndex = index;
-                }
-            }
-        }
-
-
-
-        public FormLEVEL1(int userId)
+        public FormLEVEL5(int userId)
         {
             InitializeComponent();
 
             new Settings();
 
-            db = new Database(); // dùng class Database đã viết trước đó
+            //vat can kich thuoc do thi 27x29
+            AddObstacle(0, 0);
+            AddObstacle(0, 1);
+            AddObstacle(0, 2);
+            AddObstacle(1, 0);
+            AddObstacle(1, 1);
+            AddObstacle(1, 2);
+            AddObstacle(2, 0);
+            AddObstacle(2, 1);
+            AddObstacle(2, 2);
+
+            AddObstacle(0, 29);
+            AddObstacle(0, 28);
+            AddObstacle(0, 27);
+            AddObstacle(1, 29);
+            AddObstacle(1, 28);
+            AddObstacle(1, 27);
+            AddObstacle(2, 29);
+            AddObstacle(2, 28);
+            AddObstacle(2, 27);
+
+            AddObstacle(27, 0);
+            AddObstacle(26, 0);
+            AddObstacle(25, 0);
+            AddObstacle(27, 1);
+            AddObstacle(26, 1);
+            AddObstacle(25, 1);
+            AddObstacle(27, 2);
+            AddObstacle(26, 2);
+            AddObstacle(25, 2);
+
+            AddObstacle(27, 29);
+            AddObstacle(26, 29);
+            AddObstacle(25, 29);
+            AddObstacle(27, 28);
+            AddObstacle(26, 28);
+            AddObstacle(25, 28);
+            AddObstacle(27, 27);
+            AddObstacle(26, 27);
+            AddObstacle(25, 27);
+
+            int startX = 9;
+            int endX = 18;
+            int startY = 9;
+            int endY = 18;
+
+            // cạnh trên và dưới
+            for (int x = startX; x <= endX; x++)
+            {
+                AddObstacle(x, startY);
+                AddObstacle(x, endY);
+            }
+            // cạnh trái và phải
+            for (int y = startY; y <= endY; y++)
+            {
+                AddObstacle(startX, y);
+            }
+
+            for (int y = startY; y <= endY - 2; y++)
+            { 
+                AddObstacle(endX, y);
+            }
+
+
+
+        db = new Database(); // dùng class Database đã viết trước đó
 
             currentUserId = userId; // giả định userId = 1, có thể thay bằng logic đăng nhập
 
             // lấy điểm cao nhất của người chơi
-            int userHS = db.GetUserHighScore(currentUserId, "Level1");
+            int userHS = db.GetUserHighScore(currentUserId, "Level5");
             highScore = userHS;
             txtHighScore.Text = "High Score:" + Environment.NewLine + userHS;
             txtHighScore.ForeColor = Color.Maroon;
             txtHighScore.TextAlign = ContentAlignment.MiddleCenter;
 
             // lấy điểm cao nhất server
-            int serverHS = db.GetServerHighScore("Level1");
-            txtServerHighScore.Text = "Server High Score:" + Environment.NewLine + serverHS;
-            txtServerHighScore.ForeColor = Color.DarkBlue;
-            txtServerHighScore.TextAlign = ContentAlignment.MiddleCenter;
+            int serverHS = db.GetServerHighScore("Level5");
+            ServerHighScore.Text = "Server High Score:" + Environment.NewLine + serverHS;
+            ServerHighScore.ForeColor = Color.DarkBlue;
+            ServerHighScore.TextAlign = ContentAlignment.MiddleCenter;
         }
-
-
-        private void FormLEVEL1_Load(object sender, EventArgs e)
+        //map
+        private void FormLEVEL3_Load(object sender, EventArgs e)
         {
             // tính số ô của map dựa trên kích thước picCanvas và Settings
             maxWidth = picCanvas.Width / Settings.Width;
@@ -170,7 +143,11 @@ namespace DoAnNhom_GameRan_
         {
             Application.Exit();
         }
-
+        //vat can
+        private void AddObstacle(int x, int y)
+        {
+            obstacles.Add(new Circle { X = x, Y = y });
+        }
 
         private void TogglePause()
         {
@@ -184,7 +161,6 @@ namespace DoAnNhom_GameRan_
                 snapButton.Enabled = false;
                 Pause.Enabled = false;
                 Back.Enabled = false;
-                btnExcel.Enabled = false;
 
             }
             else
@@ -196,73 +172,12 @@ namespace DoAnNhom_GameRan_
                 snapButton.Enabled = true;
                 Pause.Enabled = true;
                 Back.Enabled = true;
-                btnExcel.Enabled = true;
 
             }
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            DialogResult result = MessageBox.Show(
-             "Bạn có chắc muốn thoát game?",
-             "Xác nhận",
-             MessageBoxButtons.YesNo,
-             MessageBoxIcon.Question
-            );
-
-            if (result == DialogResult.Yes)
-            {
-                Application.Exit();
-                Form1 f = new Form1();
-                f.Close();
-            }
-
-        }
-
-        private void btnXuatExcel_Click(object sender, EventArgs e)
-            {
-                string level = "Level1"; // hoặc biến level hiện tại
-
-                var data = db.GetTopScoresByLevel(level);
-
-                if (data.Count == 0)
-                {
-                    MessageBox.Show("Không có dữ liệu!");
-                    return;
-                }
-
-                Excel.Application app = new Excel.Application();
-                Excel.Workbook wb = app.Workbooks.Add(Type.Missing);
-                Excel.Worksheet ws = (Excel.Worksheet)wb.ActiveSheet;
-
-                // Header
-                ws.Cells[1, 1] = "Rank";
-                ws.Cells[1, 2] = "User ID";
-                ws.Cells[1, 3] = "Username";
-                ws.Cells[1, 4] = "Score";
-
-                int row = 2;
-                int rank = 1;
-
-                foreach (var item in data)
-                {
-                    ws.Cells[row, 1] = rank;
-                    ws.Cells[row, 2] = item.UserId;
-                    ws.Cells[row, 3] = item.Username;
-                    ws.Cells[row, 4] = item.Score;
-
-                    row++;
-                    rank++;
-                }
-
-                ws.Columns.AutoFit();
-                app.Visible = true;
-
-                MessageBox.Show("Xuất Excel thành công!");
-            }
-
-    private void StartGame(object sender, EventArgs e)
+        private void StartGame(object sender, EventArgs e)
         {
             gameTimer.Interval = 100;
             RestartGame();
@@ -353,10 +268,27 @@ namespace DoAnNhom_GameRan_
             }
 
             // goc
-            if (Snake[0].X < 0) Snake[0].X = maxWidth;
-            if (Snake[0].X > maxWidth) Snake[0].X = 0;
-            if (Snake[0].Y < 0) Snake[0].Y = maxHeight;
-            if (Snake[0].Y > maxHeight) Snake[0].Y = 0;
+            // if (Snake[0].X < 0) Snake[0].X = maxWidth;
+            // if (Snake[0].X > maxWidth) Snake[0].X = 0;
+            // if (Snake[0].Y < 0) Snake[0].Y = maxHeight;
+            // if (Snake[0].Y > maxHeight) Snake[0].Y = 0;
+
+            //va cham
+
+            if (Snake[0].X < 0 || Snake[0].X > maxWidth || Snake[0].Y < 0 || Snake[0].Y > maxHeight)
+            {
+                GameOver();
+            }
+
+            //va cham
+            foreach (Circle obs in obstacles)
+            {
+                if (Snake[0].X == obs.X && Snake[0].Y == obs.Y)
+                {
+                    GameOver();
+                }
+            }
+
 
             // thuc an
             if (Snake[0].X == food.X && Snake[0].Y == food.Y)
@@ -410,6 +342,31 @@ namespace DoAnNhom_GameRan_
             Settings.Width, Settings.Height
             ));
 
+            //for (int x = 0; x <= maxWidth; x++)
+            //{
+            //    canvas.FillRectangle(Brushes.Gray, new Rectangle(
+            //        x * Settings.Width, 0, Settings.Width, Settings.Height)); // trên
+            //    canvas.FillRectangle(Brushes.Gray, new Rectangle(
+            //        x * Settings.Width, maxHeight * Settings.Height, Settings.Width, Settings.Height)); // dưới
+            //}
+            //for (int y = 0; y <= maxHeight; y++)
+            //{
+            //    canvas.FillRectangle(Brushes.Gray, new Rectangle(
+            //        0, y * Settings.Height, Settings.Width, Settings.Height)); // trái
+            //    canvas.FillRectangle(Brushes.Gray, new Rectangle(
+            //        maxWidth * Settings.Width, y * Settings.Height, Settings.Width, Settings.Height)); // phải
+            //}
+            //vat can
+            foreach (Circle obs in obstacles)
+            {
+                canvas.FillRectangle(Brushes.Brown, new Rectangle(
+                    obs.X * Settings.Width,
+                    obs.Y * Settings.Height,
+                    Settings.Width,
+                    Settings.Height
+                ));
+            }
+
             //kich thuoc map
             picCanvas.Width = 560;
             picCanvas.Height = 600;
@@ -420,11 +377,12 @@ namespace DoAnNhom_GameRan_
         private void GenerateFood()
         {
             Circle newFood;
-            bool onSnake;
+            bool onSnake, onObstacle;
 
             do
             {
                 onSnake = false;
+                onObstacle = false; // Initialize onObstacle before use
                 newFood = new Circle
                 {
                     X = rand.Next(2, maxWidth),
@@ -440,12 +398,79 @@ namespace DoAnNhom_GameRan_
                         break;
                     }
                 }
-            } while (onSnake);
+                //kiểm tra trùng vật cản
+                foreach (Circle obs in obstacles)
+                {
+                    if (obs.X == newFood.X && obs.Y == newFood.Y)
+                    {
+                        onObstacle = true;
+                        break;
+                    }
+                }
+
+            } while (onSnake || onObstacle);
 
             food = newFood;
         }
 
-        
+        private void btnExcel_Click(object sender, EventArgs e)
+        {
+            string level = "Level5"; // hoặc biến level hiện tại
+
+            var data = db.GetTopScoresByLevel(level);
+
+            if (data.Count == 0)
+            {
+                MessageBox.Show("Không có dữ liệu!");
+                return;
+            }
+
+            Excel.Application app = new Excel.Application();
+            Excel.Workbook wb = app.Workbooks.Add(Type.Missing);
+            Excel.Worksheet ws = (Excel.Worksheet)wb.ActiveSheet;
+
+            // Header
+            ws.Cells[1, 1] = "Rank";
+            ws.Cells[1, 2] = "User ID";
+            ws.Cells[1, 3] = "Username";
+            ws.Cells[1, 4] = "Score";
+
+            int row = 2;
+            int rank = 1;
+
+            foreach (var item in data)
+            {
+                ws.Cells[row, 1] = rank;
+                ws.Cells[row, 2] = item.UserId;
+                ws.Cells[row, 3] = item.Username;
+                ws.Cells[row, 4] = item.Score;
+
+                row++;
+                rank++;
+            }
+
+            ws.Columns.AutoFit();
+            app.Visible = true;
+
+            MessageBox.Show("Xuất Excel thành công!");
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show(
+             "Bạn có chắc muốn thoát game?",
+             "Xác nhận",
+             MessageBoxButtons.YesNo,
+             MessageBoxIcon.Question
+            );
+
+            if (result == DialogResult.Yes)
+            {
+                Application.Exit();
+                Form1 f = new Form1();
+                f.Close();
+            }
+        }
 
         private void EatFood()
         {
@@ -465,20 +490,16 @@ namespace DoAnNhom_GameRan_
 
         private void RestartGame()
         {
-            maxWidth = picCanvas.Width / Settings.Width;
-            maxHeight = picCanvas.Height / Settings.Height;
+            maxWidth = picCanvas.Width / Settings.Width - 1;
+            maxHeight = picCanvas.Height / Settings.Height - 1;
 
             Snake.Clear();
-
             startButton.Enabled = false;
             snapButton.Enabled = false;
             Pause.Enabled = false;
             Back.Enabled = false;
             btnExcel.Enabled = false;
             button1.Enabled = false;
-            dataGridView1.Visible = false;
-
-            lblRankTitle.Visible = false;
             score = 0;
             txtScore.Text = "Score: " + score;
 
@@ -496,19 +517,28 @@ namespace DoAnNhom_GameRan_
                     Y = rand.Next(safeMargin, maxHeight - safeMargin)
                 };
 
-                // You may want to check for obstacles here, but since the original code is incomplete,
-                // we'll just proceed to add the head and body as in your code.
+
+                foreach (Circle obs in obstacles)
+                {
+                    if (head.X == obs.X && head.Y == obs.Y)
+                    {
+                        onObstacle = true;
+                        break;
+                    }
+                }
             } while (onObstacle);
 
             Snake.Add(head);
 
+            // thêm thân rắn
             for (int i = 0; i < 4; i++)
             {
                 Circle body = new Circle();
                 Snake.Add(body);
             }
 
-            food = new Circle { X = rand.Next(2, maxWidth), Y = rand.Next(2, maxHeight) };
+            // tạo thức ăn (đã sửa để không trùng vật cản)
+            GenerateFood();
 
             gameTimer.Start();
         }
@@ -520,32 +550,18 @@ namespace DoAnNhom_GameRan_
             Back.Enabled = true;
             btnExcel.Enabled = true;
             button1.Enabled = true;
-            lblRankTitle.Visible = true;
 
             startButton.Text = "Restart";
 
 
-            db.SaveScore(currentUserId, "Level1", score);
 
-            int userHS = db.GetUserHighScore(currentUserId, "Level1");
+            db.SaveScore(currentUserId, "Level5", score);
+
+            int userHS = db.GetUserHighScore(currentUserId, "Level5");
             txtHighScore.Text = "High Score:" + Environment.NewLine + userHS;
 
-            int serverHS = db.GetServerHighScore("Level1");
-            txtServerHighScore.Text = "Server High Score:" + Environment.NewLine + serverHS;
-
-            // 👉 HIỂN THỊ BẢNG XẾP HẠNG
-            lblRankTitle.Visible = true;
-            string level = "Level1";
-            lblRankTitle.Text = "Xếp hạng Rank mức " + level;
-            lblRankTitle.Font = new Font("Arial", 14, FontStyle.Bold);
-            lblRankTitle.ForeColor = Color.Red;
-            lblRankTitle.TextAlign = ContentAlignment.MiddleCenter;
-            LoadRanking();
-            dataGridView1.Visible = true;
-
-            // 👉 thông báo vị trí
-            int rank = GetUserRank();
-            MessageBox.Show("Bạn đứng hạng: " + rank, "Xếp hạng");
+            int serverHS = db.GetServerHighScore("Level5");
+            ServerHighScore.Text = "Server High Score:" + Environment.NewLine + serverHS;
 
         }
 

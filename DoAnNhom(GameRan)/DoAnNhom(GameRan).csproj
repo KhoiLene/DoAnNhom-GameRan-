@@ -108,6 +108,30 @@
     <Compile Include="FormLEVEL3.Designer.cs">
       <DependentUpon>FormLEVEL3.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormLEVEL4.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLEVEL4.Designer.cs">
+      <DependentUpon>FormLEVEL4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormLEVEL5.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLEVEL5.Designer.cs">
+      <DependentUpon>FormLEVEL5.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormLEVEL6.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLEVEL6.Designer.cs">
+      <DependentUpon>FormLEVEL6.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormLEVEL7.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLEVEL7.Designer.cs">
+      <DependentUpon>FormLEVEL7.cs</DependentUpon>
+    </Compile>
     <Compile Include="NewPassword.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -157,6 +181,18 @@
     <EmbeddedResource Include="FormLEVEL3.resx">
       <DependentUpon>FormLEVEL3.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormLEVEL4.resx">
+      <DependentUpon>FormLEVEL4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLEVEL5.resx">
+      <DependentUpon>FormLEVEL5.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLEVEL6.resx">
+      <DependentUpon>FormLEVEL6.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLEVEL7.resx">
+      <DependentUpon>FormLEVEL7.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="NewPassword.resx">
       <DependentUpon>NewPassword.cs</DependentUpon>
     </EmbeddedResource>
@@ -192,6 +228,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="RuleSet1.ruleset" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
