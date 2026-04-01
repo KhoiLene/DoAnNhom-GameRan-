@@ -174,7 +174,7 @@ namespace DoAnNhom_GameRan_
             }
         }
         //map
-        private void FormLEVEL3_Load(object sender, EventArgs e)
+        private void FormLEVEL4_Load(object sender, EventArgs e)
         {
             // tính số ô của map dựa trên kích thước picCanvas và Settings
             maxWidth = picCanvas.Width / Settings.Width;
@@ -551,6 +551,7 @@ namespace DoAnNhom_GameRan_
             btnExcel.Enabled = false;
             button1.Enabled = false;
             dataGridView1.Visible = false;
+            dataGridView1.Enabled = false;
             lblRankTitle.Visible = false;
             score = 0;
             txtScore.Text = "Score: " + score;
@@ -603,6 +604,7 @@ namespace DoAnNhom_GameRan_
             btnExcel.Enabled = true;
             button1.Enabled = true;
             dataGridView1.Visible = true;
+            dataGridView1.Enabled = true;
             lblRankTitle.Visible = true;
 
             startButton.Text = "Restart";
