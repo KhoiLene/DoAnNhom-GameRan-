@@ -64,6 +64,18 @@ namespace DoAnNhom_GameRan_
                 case 5: levelForm = new FormLEVEL5(currentUserId); break;
                 case 6: levelForm = new FormLEVEL6(currentUserId); break;
                 case 7: levelForm = new FormLEVEL7(currentUserId); break;
+                case 8: levelForm = new FormLEVEL8(currentUserId); break;
+                case 9: levelForm = new FormLEVEL9(currentUserId); break;
+                case 10: levelForm = new FormLEVEL10(currentUserId); break;
+                case 11: levelForm = new FormLEVEL11(currentUserId); break;
+                case 12: levelForm = new FormLEVEL12(currentUserId); break;
+                case 13: levelForm = new FormLEVEL13(currentUserId); break;
+                case 14: levelForm = new FormLEVEL14(currentUserId); break;
+                case 15: levelForm = new FormLEVEL15(currentUserId); break;
+                case 16: levelForm = new FormLEVEL16(currentUserId); break;
+                case 17: levelForm = new FormLEVEL17(currentUserId); break;
+                case 18: levelForm = new FormLEVEL18(currentUserId); break;
+                case 19: levelForm = new FormLEVEL19(currentUserId); break;
                 case 20: levelForm = new FormLEVEL20(currentUserId); break;
                 
                 default:

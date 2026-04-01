@@ -1,0 +1,237 @@
+﻿
+namespace DoAnNhom_GameRan_
+{
+    partial class FormLEVEL8
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.components = new System.ComponentModel.Container();
+            this.startButton = new System.Windows.Forms.Button();
+            this.snapButton = new System.Windows.Forms.Button();
+            this.picCanvas = new System.Windows.Forms.PictureBox();
+            this.txtScore = new System.Windows.Forms.Label();
+            this.txtHighScore = new System.Windows.Forms.Label();
+            this.gameTimer = new System.Windows.Forms.Timer(this.components);
+            this.Pause = new System.Windows.Forms.Button();
+            this.Back = new System.Windows.Forms.Button();
+            this.ServerHighScore = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.btnExcel = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.lblRankTitle = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.picCanvas)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // startButton
+            // 
+            this.startButton.BackColor = System.Drawing.Color.SkyBlue;
+            this.startButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.startButton.Location = new System.Drawing.Point(598, 11);
+            this.startButton.Name = "startButton";
+            this.startButton.Size = new System.Drawing.Size(114, 56);
+            this.startButton.TabIndex = 0;
+            this.startButton.Text = "Start";
+            this.startButton.UseVisualStyleBackColor = false;
+            this.startButton.Click += new System.EventHandler(this.StartGame);
+            // 
+            // snapButton
+            // 
+            this.snapButton.BackColor = System.Drawing.Color.PaleGreen;
+            this.snapButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.snapButton.Location = new System.Drawing.Point(598, 171);
+            this.snapButton.Name = "snapButton";
+            this.snapButton.Size = new System.Drawing.Size(114, 56);
+            this.snapButton.TabIndex = 0;
+            this.snapButton.Text = "Snap";
+            this.snapButton.UseVisualStyleBackColor = false;
+            this.snapButton.Click += new System.EventHandler(this.TakeSnapShot);
+            // 
+            // picCanvas
+            // 
+            this.picCanvas.BackColor = System.Drawing.Color.Black;
+            this.picCanvas.Location = new System.Drawing.Point(9, 12);
+            this.picCanvas.Name = "picCanvas";
+            this.picCanvas.Size = new System.Drawing.Size(580, 680);
+            this.picCanvas.TabIndex = 1;
+            this.picCanvas.TabStop = false;
+            this.picCanvas.Paint += new System.Windows.Forms.PaintEventHandler(this.UpdatePictureBoxGraphics);
+            // 
+            // txtScore
+            // 
+            this.txtScore.AutoSize = true;
+            this.txtScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtScore.Location = new System.Drawing.Point(594, 473);
+            this.txtScore.Name = "txtScore";
+            this.txtScore.Size = new System.Drawing.Size(76, 20);
+            this.txtScore.TabIndex = 2;
+            this.txtScore.Text = "Score: 0";
+            // 
+            // txtHighScore
+            // 
+            this.txtHighScore.AutoSize = true;
+            this.txtHighScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtHighScore.Location = new System.Drawing.Point(594, 435);
+            this.txtHighScore.Name = "txtHighScore";
+            this.txtHighScore.Size = new System.Drawing.Size(98, 20);
+            this.txtHighScore.TabIndex = 2;
+            this.txtHighScore.Text = "High Score";
+            // 
+            // gameTimer
+            // 
+            this.gameTimer.Interval = 10;
+            this.gameTimer.Tick += new System.EventHandler(this.GameTimerEvent);
+            // 
+            // Pause
+            // 
+            this.Pause.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.Pause.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Pause.Location = new System.Drawing.Point(595, 658);
+            this.Pause.Name = "Pause";
+            this.Pause.Size = new System.Drawing.Size(114, 56);
+            this.Pause.TabIndex = 3;
+            this.Pause.Text = "Pause";
+            this.Pause.UseVisualStyleBackColor = false;
+            this.Pause.Visible = false;
+            this.Pause.Click += new System.EventHandler(this.Pause_Click);
+            // 
+            // Back
+            // 
+            this.Back.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.Back.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Back.Location = new System.Drawing.Point(598, 90);
+            this.Back.Name = "Back";
+            this.Back.Size = new System.Drawing.Size(114, 56);
+            this.Back.TabIndex = 4;
+            this.Back.Text = "Back";
+            this.Back.UseVisualStyleBackColor = false;
+            this.Back.Click += new System.EventHandler(this.Back_Click);
+            // 
+            // ServerHighScore
+            // 
+            this.ServerHighScore.AutoSize = true;
+            this.ServerHighScore.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ServerHighScore.Location = new System.Drawing.Point(594, 398);
+            this.ServerHighScore.Name = "ServerHighScore";
+            this.ServerHighScore.Size = new System.Drawing.Size(155, 20);
+            this.ServerHighScore.TabIndex = 5;
+            this.ServerHighScore.Text = "Server High Score";
+            // 
+            // button1
+            // 
+            this.button1.BackColor = System.Drawing.Color.Crimson;
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(598, 323);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(114, 56);
+            this.button1.TabIndex = 10;
+            this.button1.Text = "Exit";
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // btnExcel
+            // 
+            this.btnExcel.BackColor = System.Drawing.Color.Gray;
+            this.btnExcel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnExcel.Location = new System.Drawing.Point(598, 240);
+            this.btnExcel.Name = "btnExcel";
+            this.btnExcel.Size = new System.Drawing.Size(114, 56);
+            this.btnExcel.TabIndex = 9;
+            this.btnExcel.Text = "Print Excel";
+            this.btnExcel.UseVisualStyleBackColor = false;
+            this.btnExcel.Click += new System.EventHandler(this.btnExcel_Click);
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.BackgroundColor = System.Drawing.Color.Yellow;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(9, 267);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersWidth = 51;
+            this.dataGridView1.RowTemplate.Height = 24;
+            this.dataGridView1.Size = new System.Drawing.Size(518, 212);
+            this.dataGridView1.TabIndex = 11;
+            this.dataGridView1.Visible = false;
+            // 
+            // lblRankTitle
+            // 
+            this.lblRankTitle.AutoSize = true;
+            this.lblRankTitle.Enabled = false;
+            this.lblRankTitle.Location = new System.Drawing.Point(164, 240);
+            this.lblRankTitle.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblRankTitle.Name = "lblRankTitle";
+            this.lblRankTitle.Size = new System.Drawing.Size(35, 13);
+            this.lblRankTitle.TabIndex = 12;
+            this.lblRankTitle.Text = "label1";
+            this.lblRankTitle.Visible = false;
+            // 
+            // FormLEVEL7
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(748, 725);
+            this.Controls.Add(this.lblRankTitle);
+            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnExcel);
+            this.Controls.Add(this.ServerHighScore);
+            this.Controls.Add(this.Back);
+            this.Controls.Add(this.Pause);
+            this.Controls.Add(this.txtHighScore);
+            this.Controls.Add(this.txtScore);
+            this.Controls.Add(this.picCanvas);
+            this.Controls.Add(this.snapButton);
+            this.Controls.Add(this.startButton);
+            this.Name = "FormLEVEL7";
+            this.Text = "Classic Snakes Game MOO ICT";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.KeyIsDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.KeyIsUp);
+            ((System.ComponentModel.ISupportInitialize)(this.picCanvas)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.Button startButton;
+        private System.Windows.Forms.Button snapButton;
+        private System.Windows.Forms.PictureBox picCanvas;
+        private System.Windows.Forms.Label txtScore;
+        private System.Windows.Forms.Label txtHighScore;
+        private System.Windows.Forms.Timer gameTimer;
+        private System.Windows.Forms.Button Pause;
+        private System.Windows.Forms.Button Back;
+        private System.Windows.Forms.Label ServerHighScore;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnExcel;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.Label lblRankTitle;
+    }
+}

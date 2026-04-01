@@ -1,0 +1,684 @@
+﻿using DoAnNhom_GameRan_;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Drawing.Imaging; // add this for the JPG compressor
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
+using Excel = Microsoft.Office.Interop.Excel;
+
+namespace DoAnNhom_GameRan_
+{
+    public partial class FormLEVEL10 : Form
+    {
+
+        private List<Circle> Snake = new List<Circle>();
+        private Circle food = new Circle();
+        private List<Circle> obstacles = new List<Circle>();
+
+        int maxWidth;
+        int maxHeight;
+
+        int score;
+        int highScore;
+
+        Random rand = new Random();
+        bool isPaused = false;
+        bool goLeft, goRight, goDown, goUp;
+
+        private Database db;
+
+        private int currentUserId; // Add this field to the FormLEVEL1 class
+
+        public FormLEVEL10(int userId)
+        {
+            InitializeComponent();
+
+            new Settings();
+
+            //vat can kich thuoc do thi 27x29
+
+
+            int startX = 4;
+            int endX = 23;
+            int startY = 9;
+            int endY = 18;
+
+            // cạnh trên và dưới
+            //for (int x = startX; x <= endX; x++)
+            //    {for (int y = startY; y <= endY/2; y++)
+
+            //        {
+            //            AddObstacle(startX, y);
+            //            AddObstacle(endX, y - 2);
+            //        }
+            //        AddObstacle(x, startY);
+            //        AddObstacle(x, endY);
+            //    }
+            // cạnh trái và phải
+            //for (int y = startY; y <= endY; y++)
+            //{
+            //    AddObstacle(startX, y);
+            //    AddObstacle(endX, y - 2);
+            //}
+            // Left half of isosceles triangle (right triangle)
+            //for (int y = startY; y <= endY; y++)
+            //{
+            //    for (int x = startX; x <= startX + (y - startY); x++)
+            //    {
+            //        AddObstacle(x, y);
+            //    }
+            //}
+
+            //// Right half of isosceles triangle (mirrored right triangle)
+            //for (int y = startY; y <= endY; y++)
+            //{
+            //    for (int x = endX; x >= endX - (y - startY); x--)
+            //    {
+            //        AddObstacle(x, y);
+            //    }
+            //}
+
+            for (int y = startY; y <= endY; y++)
+            {
+                for (int x = startX; x <= endX; x++)
+                {
+                    // Skip left triangle area
+                    if (x <= startX + (y - startY))
+                    {
+                        continue;
+                    }
+                    // Skip right triangle area
+                    if (x >= endX - (y - startY))
+                    {
+                        continue;
+                    }
+
+                    // Draw rectangle area outside triangles
+                    AddObstacle(x, y);
+                }
+            }
+
+
+
+
+
+
+            db = new Database(); // dùng class Database đã viết trước đó
+
+            currentUserId = userId; // giả định userId = 1, có thể thay bằng logic đăng nhập
+
+            // lấy điểm cao nhất của người chơi
+            int userHS = db.GetUserHighScore(currentUserId, "Level10");
+            highScore = userHS;
+            txtHighScore.Text = "High Score:" + Environment.NewLine + userHS;
+            txtHighScore.ForeColor = Color.Maroon;
+            txtHighScore.TextAlign = ContentAlignment.MiddleCenter;
+
+            // lấy điểm cao nhất server
+            int serverHS = db.GetServerHighScore("Level10");
+            ServerHighScore.Text = "Server High Score:" + Environment.NewLine + serverHS;
+            ServerHighScore.ForeColor = Color.DarkBlue;
+            ServerHighScore.TextAlign = ContentAlignment.MiddleCenter;
+        }
+
+        private int GetUserRank()
+        {
+            string level = "Level10";
+            var data = db.GetTopScoresByLevel(level);
+
+            for (int i = 0; i < data.Count; i++)
+            {
+                if (data[i].UserId == currentUserId)
+                {
+                    return i + 1;
+                }
+            }
+
+            return -1;
+        }
+
+        private void LoadRanking()
+        {
+            string level = "Level10";
+            var data = db.GetTopScoresByLevel(level);
+
+            if (data == null || data.Count == 0)
+            {
+                MessageBox.Show("Không có dữ liệu!");
+                return;
+            }
+
+            // ❗ tạo luôn Rank trong data
+            var rankedData = data
+                .Select((x, index) => new
+                {
+                    Rank = "Rank " + (index + 1),
+                    x.UserId,
+                    x.Username,
+                    x.Score
+                }).ToList();
+
+            dataGridView1.DataSource = null;
+            dataGridView1.AutoGenerateColumns = true;
+            dataGridView1.DataSource = rankedData;
+
+            // 👉 highlight user
+            //foreach (DataGridViewRow row in dataGridView1.Rows)
+            //{
+            //    if (row.Cells["UserId"].Value == null) continue;
+
+            //    if (Convert.ToInt32(row.Cells["UserId"].Value) == currentUserId)
+            //    {
+            //        row.DefaultCellStyle.BackColor = Color.Yellow;
+            //        row.DefaultCellStyle.ForeColor = Color.Black;
+
+            //        dataGridView1.FirstDisplayedScrollingRowIndex = row.Index;
+            //    }
+            //}
+
+            foreach (DataGridViewRow row in dataGridView1.Rows)
+            {
+                if (row.Cells["UserId"].Value == null) continue;
+
+                int userId;
+                if (!int.TryParse(row.Cells["UserId"].Value.ToString(), out userId)) continue;
+
+                int index = row.Index;
+
+                // 🥇🥈🥉 Top 3
+                if (index == 0)
+                    row.DefaultCellStyle.BackColor = Color.Gold;
+                else if (index == 1)
+                    row.DefaultCellStyle.BackColor = Color.Silver;
+                else if (index == 2)
+                    row.DefaultCellStyle.BackColor = Color.Peru;
+
+                // 👤 USER HIỆN TẠI
+                if (userId == currentUserId)
+                {
+                    row.DefaultCellStyle.BackColor = Color.Yellow;
+                    row.DefaultCellStyle.ForeColor = Color.Black;
+
+                    // 👉 thêm chữ YOU vào Username
+                    string name = row.Cells["Username"].Value.ToString();
+                    row.Cells["Username"].Value = name + " (YOU)";
+
+                    // 👉 scroll tới user
+                    dataGridView1.FirstDisplayedScrollingRowIndex = index;
+                }
+            }
+        }
+        //map
+        private void FormLEVEL3_Load(object sender, EventArgs e)
+        {
+            // tính số ô của map dựa trên kích thước picCanvas và Settings
+            maxWidth = picCanvas.Width / Settings.Width;
+            maxHeight = picCanvas.Height / Settings.Height;
+
+            // hiện kích thước map
+            Label mapSizeLabel = new Label();
+            mapSizeLabel.Text = $"Map size: {maxWidth + 1} x {maxHeight + 1} ô";
+            mapSizeLabel.Font = new Font("Arial", 12, FontStyle.Bold);
+            mapSizeLabel.ForeColor = Color.Blue;
+            mapSizeLabel.AutoSize = true;
+            mapSizeLabel.Location = new Point(10, 10); // góc trên trái
+            this.Controls.Add(mapSizeLabel);
+        }
+        private void FormLEVEL1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+        }
+        //vat can
+        private void AddObstacle(int x, int y)
+        {
+            obstacles.Add(new Circle { X = x, Y = y });
+        }
+
+        private void TogglePause()
+        {
+            if (isPaused)
+            {
+                gameTimer.Interval = 100;
+                gameTimer.Start();
+                isPaused = false;
+
+                startButton.Enabled = false;
+                snapButton.Enabled = false;
+                Pause.Enabled = false;
+                Back.Enabled = false;
+
+            }
+            else
+            {
+                gameTimer.Interval = 100;
+                gameTimer.Stop();
+                isPaused = true;
+                startButton.Enabled = true;
+                snapButton.Enabled = true;
+                Pause.Enabled = true;
+                Back.Enabled = true;
+
+            }
+
+        }
+
+        private void StartGame(object sender, EventArgs e)
+        {
+            gameTimer.Interval = 100;
+            RestartGame();
+        }
+
+        private void Pause_Click(object sender, EventArgs e)
+        {
+            TogglePause();
+        }
+
+        private void Back_Click(object sender, EventArgs e)
+        {
+            FormGAME menu = new FormGAME(currentUserId);
+            menu.Show();
+            this.Close();
+        }
+
+        private void TakeSnapShot(object sender, EventArgs e)
+        {
+            Label caption = new Label();
+            caption.Text = "I scored: " + score + " and my Highscore is " + highScore + " on the Snake Game from MOO ICT";
+            caption.Font = new Font("Ariel", 12, FontStyle.Bold);
+            caption.ForeColor = Color.Purple;
+            caption.AutoSize = false;
+            caption.Width = picCanvas.Width;
+            caption.Height = 30;
+            caption.TextAlign = ContentAlignment.MiddleCenter;
+            picCanvas.Controls.Add(caption);
+
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.FileName = "Snake Game SnapShot MOO ICT";
+            dialog.DefaultExt = "jpg";
+            dialog.Filter = "JPG Image File | *.jpg";
+            dialog.ValidateNames = true;
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                int width = Convert.ToInt32(picCanvas.Width);
+                int height = Convert.ToInt32(picCanvas.Height);
+                Bitmap bmp = new Bitmap(width, height);
+                picCanvas.DrawToBitmap(bmp, new Rectangle(0, 0, width, height));
+                bmp.Save(dialog.FileName, ImageFormat.Jpeg);
+                picCanvas.Controls.Remove(caption);
+            }
+        }
+
+
+        string nextDirection = "right"; // hướng mặc định
+
+        private void KeyIsDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Left && Settings.directions != "right")
+                nextDirection = "left";
+            if (e.KeyCode == Keys.Right && Settings.directions != "left")
+                nextDirection = "right";
+            if (e.KeyCode == Keys.Up && Settings.directions != "down")
+                nextDirection = "up";
+            if (e.KeyCode == Keys.Down && Settings.directions != "up")
+                nextDirection = "down";
+
+            if (e.KeyCode == Keys.P)
+                TogglePause();
+        }
+
+        private void KeyIsUp(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void GameTimerEvent(object sender, EventArgs e)
+        {
+            Settings.directions = nextDirection;
+
+            // di chuyen minh
+            for (int i = Snake.Count - 1; i >= 1; i--)
+            {
+                Snake[i].X = Snake[i - 1].X;
+                Snake[i].Y = Snake[i - 1].Y;
+            }
+
+            // di chuyen dau
+            switch (Settings.directions)
+            {
+                case "left": Snake[0].X--; break;
+                case "right": Snake[0].X++; break;
+                case "up": Snake[0].Y--; break;
+                case "down": Snake[0].Y++; break;
+            }
+
+            // goc
+            // if (Snake[0].X < 0) Snake[0].X = maxWidth;
+            // if (Snake[0].X > maxWidth) Snake[0].X = 0;
+            // if (Snake[0].Y < 0) Snake[0].Y = maxHeight;
+            // if (Snake[0].Y > maxHeight) Snake[0].Y = 0;
+
+            //va cham
+
+            if (Snake[0].X < 0 || Snake[0].X > maxWidth || Snake[0].Y < 0 || Snake[0].Y > maxHeight)
+            {
+                GameOver();
+            }
+
+            //va cham
+            foreach (Circle obs in obstacles)
+            {
+                if (Snake[0].X == obs.X && Snake[0].Y == obs.Y)
+                {
+                    GameOver();
+                }
+            }
+
+
+            // thuc an
+            if (Snake[0].X == food.X && Snake[0].Y == food.Y)
+            {
+                EatFood();
+            }
+
+            // cham than
+            for (int j = 1; j < Snake.Count; j++)
+            {
+                if (Snake[0].X == Snake[j].X && Snake[0].Y == Snake[j].Y)
+                {
+                    GameOver();
+                }
+            }
+
+            picCanvas.Invalidate();
+        }
+
+
+        private void UpdatePictureBoxGraphics(object sender, PaintEventArgs e)
+        {
+            Graphics canvas = e.Graphics;
+
+            Brush snakeColour;
+
+            for (int i = 0; i < Snake.Count; i++)
+            {
+                if (i == 0)
+                {
+                    snakeColour = Brushes.Black;
+                }
+                else
+                {
+                    snakeColour = Brushes.DarkGreen;
+                }
+
+                canvas.FillEllipse(snakeColour, new Rectangle
+                    (
+                    Snake[i].X * Settings.Width,
+                    Snake[i].Y * Settings.Height,
+                    Settings.Width, Settings.Height
+                    ));
+            }
+
+
+            canvas.FillEllipse(Brushes.DarkRed, new Rectangle
+            (
+            food.X * Settings.Width,
+            food.Y * Settings.Height,
+            Settings.Width, Settings.Height
+            ));
+
+            //for (int x = 0; x <= maxWidth; x++)
+            //{
+            //    canvas.FillRectangle(Brushes.Gray, new Rectangle(
+            //        x * Settings.Width, 0, Settings.Width, Settings.Height)); // trên
+            //    canvas.FillRectangle(Brushes.Gray, new Rectangle(
+            //        x * Settings.Width, maxHeight * Settings.Height, Settings.Width, Settings.Height)); // dưới
+            //}
+            //for (int y = 0; y <= maxHeight; y++)
+            //{
+            //    canvas.FillRectangle(Brushes.Gray, new Rectangle(
+            //        0, y * Settings.Height, Settings.Width, Settings.Height)); // trái
+            //    canvas.FillRectangle(Brushes.Gray, new Rectangle(
+            //        maxWidth * Settings.Width, y * Settings.Height, Settings.Width, Settings.Height)); // phải
+            //}
+            //vat can
+            foreach (Circle obs in obstacles)
+            {
+                canvas.FillRectangle(Brushes.Brown, new Rectangle(
+                    obs.X * Settings.Width,
+                    obs.Y * Settings.Height,
+                    Settings.Width,
+                    Settings.Height
+                ));
+            }
+
+            //kich thuoc map
+            picCanvas.Width = 560;
+            picCanvas.Height = 600;
+        }
+
+
+
+        private void GenerateFood()
+        {
+            Circle newFood;
+            bool onSnake, onObstacle;
+
+            do
+            {
+                onSnake = false;
+                onObstacle = false; // Initialize onObstacle before use
+                newFood = new Circle
+                {
+                    X = rand.Next(2, maxWidth),
+                    Y = rand.Next(2, maxHeight)
+                };
+
+                // kiểm tra xem thức ăn có trùng với rắn không
+                foreach (Circle part in Snake)
+                {
+                    if (part.X == newFood.X && part.Y == newFood.Y)
+                    {
+                        onSnake = true;
+                        break;
+                    }
+                }
+                //kiểm tra trùng vật cản
+                foreach (Circle obs in obstacles)
+                {
+                    if (obs.X == newFood.X && obs.Y == newFood.Y)
+                    {
+                        onObstacle = true;
+                        break;
+                    }
+                }
+
+            } while (onSnake || onObstacle);
+
+            food = newFood;
+        }
+
+        private void btnExcel_Click(object sender, EventArgs e)
+        {
+            string level = "Level10"; // hoặc biến level hiện tại
+
+            var data = db.GetTopScoresByLevel(level);
+
+            if (data.Count == 0)
+            {
+                MessageBox.Show("Không có dữ liệu!");
+                return;
+            }
+
+            Excel.Application app = new Excel.Application();
+            Excel.Workbook wb = app.Workbooks.Add(Type.Missing);
+            Excel.Worksheet ws = (Excel.Worksheet)wb.ActiveSheet;
+
+            // Header
+            ws.Cells[1, 1] = "Rank";
+            ws.Cells[1, 2] = "User ID";
+            ws.Cells[1, 3] = "Username";
+            ws.Cells[1, 4] = "Score";
+
+            int row = 2;
+            int rank = 1;
+
+            foreach (var item in data)
+            {
+                ws.Cells[row, 1] = rank;
+                ws.Cells[row, 2] = item.UserId;
+                ws.Cells[row, 3] = item.Username;
+                ws.Cells[row, 4] = item.Score;
+
+                row++;
+                rank++;
+            }
+
+            ws.Columns.AutoFit();
+            app.Visible = true;
+
+            MessageBox.Show("Xuất Excel thành công!");
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show(
+             "Bạn có chắc muốn thoát game?",
+             "Xác nhận",
+             MessageBoxButtons.YesNo,
+             MessageBoxIcon.Question
+            );
+
+            if (result == DialogResult.Yes)
+            {
+                Application.Exit();
+                Form1 f = new Form1();
+                f.Close();
+            }
+        }
+
+        private void EatFood()
+        {
+            score += 1;
+            txtScore.Text = "Score: " + score;
+
+            Circle body = new Circle
+            {
+                X = Snake[Snake.Count - 1].X,
+                Y = Snake[Snake.Count - 1].Y
+            };
+            Snake.Add(body);
+
+            GenerateFood(); // gọi hàm mới
+        }
+
+
+        private void RestartGame()
+        {
+            maxWidth = picCanvas.Width / Settings.Width - 1;
+            maxHeight = picCanvas.Height / Settings.Height - 1;
+
+            Snake.Clear();
+            startButton.Enabled = false;
+            snapButton.Enabled = false;
+            Pause.Enabled = false;
+            Back.Enabled = false;
+            btnExcel.Enabled = false;
+            button1.Enabled = false;
+            dataGridView1.Visible = false;
+            dataGridView1.Enabled = false;
+            lblRankTitle.Visible = false;
+            score = 0;
+            txtScore.Text = "Score: " + score;
+
+            int safeMargin = Snake.Count + 10;
+
+            // chọn vị trí đầu rắn không trùng với vật cản
+            // Desired starting position
+            int startX = 0;  // replace with your chosen X
+            int startY = 0;   // replace with your chosen Y
+
+            Circle head = new Circle
+            {
+                X = startX,
+                Y = startY
+            };
+
+            // Optional: check if this position is on an obstacle
+            bool onObstacle = false;
+            foreach (Circle obs in obstacles)
+            {
+                if (head.X == obs.X && head.Y == obs.Y)
+                {
+                    onObstacle = true;
+                    break;
+                }
+            }
+
+            // Only add if safe
+            if (!onObstacle)
+            {
+                Snake.Add(head);
+            }
+            ;
+
+            // thêm thân rắn
+            for (int i = 0; i < 4; i++)
+            {
+                Circle body = new Circle();
+                Snake.Add(body);
+            }
+
+            // tạo thức ăn (đã sửa để không trùng vật cản)
+            GenerateFood();
+
+            gameTimer.Start();
+        }
+        private void GameOver()
+        {
+            gameTimer.Stop();
+            startButton.Enabled = true;
+            snapButton.Enabled = true;
+            Back.Enabled = true;
+            btnExcel.Enabled = true;
+            button1.Enabled = true;
+            dataGridView1.Visible = true;
+            dataGridView1.Enabled = true;
+            lblRankTitle.Visible = true;
+
+            startButton.Text = "Restart";
+
+
+
+            db.SaveScore(currentUserId, "Level10", score);
+
+            int userHS = db.GetUserHighScore(currentUserId, "Level10");
+            txtHighScore.Text = "High Score:" + Environment.NewLine + userHS;
+
+            int serverHS = db.GetServerHighScore("Level10");
+            ServerHighScore.Text = "Server High Score:" + Environment.NewLine + serverHS;
+
+            lblRankTitle.Visible = true;
+            string level = "Level10";
+            lblRankTitle.Text = "Xếp hạng Rank mức " + level;
+            lblRankTitle.Font = new Font("Arial", 14, FontStyle.Bold);
+            lblRankTitle.ForeColor = Color.Red;
+            lblRankTitle.TextAlign = ContentAlignment.MiddleCenter;
+            LoadRanking();
+            dataGridView1.Visible = true;
+
+            // 👉 thông báo vị trí
+            int rank = GetUserRank();
+            MessageBox.Show("Bạn đứng hạng: " + rank, "Xếp hạng");
+
+        }
+
+
+    }
+}

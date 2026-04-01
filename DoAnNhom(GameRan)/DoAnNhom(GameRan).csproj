@@ -90,6 +90,66 @@
     <Compile Include="FormLEVEL1.Designer.cs">
       <DependentUpon>FormLEVEL1.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormLEVEL10.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLEVEL10.Designer.cs">
+      <DependentUpon>FormLEVEL10.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormLEVEL11.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLEVEL11.Designer.cs">
+      <DependentUpon>FormLEVEL11.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormLEVEL12.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLEVEL12.Designer.cs">
+      <DependentUpon>FormLEVEL12.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormLEVEL13.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLEVEL13.Designer.cs">
+      <DependentUpon>FormLEVEL13.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormLEVEL14.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLEVEL14.Designer.cs">
+      <DependentUpon>FormLEVEL14.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormLEVEL15.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLEVEL15.Designer.cs">
+      <DependentUpon>FormLEVEL15.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormLEVEL16.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLEVEL16.Designer.cs">
+      <DependentUpon>FormLEVEL16.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormLEVEL17.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLEVEL17.Designer.cs">
+      <DependentUpon>FormLEVEL17.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormLEVEL18.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLEVEL18.Designer.cs">
+      <DependentUpon>FormLEVEL18.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormLEVEL19.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLEVEL19.Designer.cs">
+      <DependentUpon>FormLEVEL19.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormLEVEL2.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -132,6 +192,18 @@
     <Compile Include="FormLEVEL7.Designer.cs">
       <DependentUpon>FormLEVEL7.cs</DependentUpon>
     </Compile>
+    <Compile Include="FormLEVEL8.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLEVEL8.Designer.cs">
+      <DependentUpon>FormLEVEL8.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormLEVEL9.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormLEVEL9.Designer.cs">
+      <DependentUpon>FormLEVEL9.cs</DependentUpon>
+    </Compile>
     <Compile Include="NewPassword.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -172,6 +244,36 @@
     <EmbeddedResource Include="FormLEVEL1.resx">
       <DependentUpon>FormLEVEL1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FormLEVEL10.resx">
+      <DependentUpon>FormLEVEL10.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLEVEL11.resx">
+      <DependentUpon>FormLEVEL11.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLEVEL12.resx">
+      <DependentUpon>FormLEVEL12.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLEVEL13.resx">
+      <DependentUpon>FormLEVEL13.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLEVEL14.resx">
+      <DependentUpon>FormLEVEL14.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLEVEL15.resx">
+      <DependentUpon>FormLEVEL15.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLEVEL16.resx">
+      <DependentUpon>FormLEVEL16.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLEVEL17.resx">
+      <DependentUpon>FormLEVEL17.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLEVEL18.resx">
+      <DependentUpon>FormLEVEL18.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLEVEL19.resx">
+      <DependentUpon>FormLEVEL19.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormLEVEL2.resx">
       <DependentUpon>FormLEVEL2.cs</DependentUpon>
     </EmbeddedResource>
@@ -192,6 +294,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormLEVEL7.resx">
       <DependentUpon>FormLEVEL7.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLEVEL8.resx">
+      <DependentUpon>FormLEVEL8.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormLEVEL9.resx">
+      <DependentUpon>FormLEVEL9.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="NewPassword.resx">
       <DependentUpon>NewPassword.cs</DependentUpon>
