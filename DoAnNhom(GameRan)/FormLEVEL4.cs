@@ -543,6 +543,8 @@ namespace DoAnNhom_GameRan_
             maxWidth = picCanvas.Width / Settings.Width - 1;
             maxHeight = picCanvas.Height / Settings.Height - 1;
 
+            string nextDirection = "right";
+
             Snake.Clear();
             startButton.Enabled = false;
             snapButton.Enabled = false;
